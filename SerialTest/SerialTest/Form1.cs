@@ -25,14 +25,25 @@ namespace SerialTest
             AvailablePorts();       //List Available Ports Under "Port" Drop Down Menu
         }
 
+        //Function list all available COM ports to Drop-Down Menu for user to select
          void AvailablePorts()
         {
             String[] ports = SerialPort.GetPortNames();
             PortList.Items.AddRange(ports);
         }
 
+        //Function: Disables all buttons except OpenPortButton, Preventing user from crashing program
+        private void Form1_Load(object sender, EventArgs e)
+        {
+            ClosePortButton.Enabled = false;    //Disable Close Port Button
+            ReadButton.Enabled = false;         //Disable Read Button
+            StandbyButton.Enabled = false;      //Disable Standby Button
+            CalibrateButton.Enabled = false;    //Disable Calibrate Button
+        }
+    
         //OpenPortButton
-        private void button1_Click(object sender, EventArgs e)
+        //Function: Establishes Serial Communication once COM Port and Baud rate are selected
+        private void OpenPort_Click(object sender, EventArgs e)
         {
             try
             {
@@ -45,11 +56,11 @@ namespace SerialTest
                     serial_port.PortName = PortList.Text;
                     serial_port.BaudRate = Convert.ToInt32(BaudBox.Text);
                     serial_port.Open();
-                    OpenPortButton.Enabled = false;        // Disable Open Port Button
-                    ClosePortButton.Enabled = true;         // Enable Close Port
-                   //button4.Enabled = true;         // Enable Send Button 
-                    ReadButton.Enabled = true;         // Enable Read Button
-                                           
+                    OpenPortButton.Enabled = false;     //Disable Open Port Button
+                    ClosePortButton.Enabled = true;     //Enable Close Port Button
+                    ReadButton.Enabled = true;          //Enable Read Button
+                    StandbyButton.Enabled = true;      //Enable Standby Button
+                    CalibrateButton.Enabled = true;    //Enable Calibrate Button
                 }
             }
             catch (Exception ex)
@@ -59,44 +70,22 @@ namespace SerialTest
         }
 
 
-        private void Form1_Load(object sender, EventArgs e)
-        {
-            using (SerialPort serialport = new SerialPort("COM6", 9600, System.IO.Ports.Parity.None, 8, System.IO.Ports.StopBits.One))
-            {
-                serialport.Open();
-                string test = serialport.ReadExisting();
-                textBox1.Text = test;
-            }
-        }
 
-
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            // Notes :
-            // This function gets called when the contents of the text box
-            // Changes between "posts" to the "server"
-            // In our case this method gets triggered when TextBox1 is changed
-            try
-              {
-        
-              }
-            catch { Exception ex; }
-           
-        }
-
-       
         //ClosePortButton
-        private void button2_Click(object sender, EventArgs e)
+        //Function: Closes serial communication, Disables all buttons except Open Port Button
+        private void ClosePort_Click(object sender, EventArgs e)
         {
             serial_port.Close();
-            button4.Enabled = false;
-            ReadButton.Enabled = false;
             OpenPortButton.Enabled = true;
+            ReadButton.Enabled = false;
             ClosePortButton.Enabled = false;
+            StandbyButton.Enabled = false;
+            CalibrateButton.Enabled = false;
         }
 
         //ReadButton
-        private void button3_Click(object sender, EventArgs e)
+        //Function: Reads Data being transmitted over serial communication
+        private void ReadButton_Click(object sender, EventArgs e)
         {
             try
             {
@@ -106,16 +95,6 @@ namespace SerialTest
             {
                 InputData.Text = "Timeout Exception.";
             }
-        }
-
-        private void label2_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label2_Click_1(object sender, EventArgs e)
-        {
-
         }
     }
 }

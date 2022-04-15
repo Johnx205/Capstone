@@ -106,6 +106,81 @@ namespace SerialTest
         private void ShowData(object sender, EventArgs e)
         {
             InputData.Text = DataIn;
+            var parsedData = Parse_LED_Status(DataIn);
+            if (true)
+            {
+                Update_UI(parsedData.r, parsedData.g, parsedData.b, parsedData.d); 
+            }
+
+        }
+
+        private (double r, double g, double b, int d, bool has_error) Parse_LED_Status(string DataIn)
+        {
+            var splitString = DataIn.Split(' ');
+            // I have assumed that this will always split into 4 values
+            // Just because you print 4 does not mean 4 are received.
+            // Transmission errors can cause received data not to match transmitted data
+
+            // do a check for 4 received values
+
+            // You may need a string.Trim to remove any extra whitespace
+
+            // below assumes all values will be able to be parsed.
+            // again, transmission errors could cause this to fail.
+            // use double.TryParse (same for int.TryParse
+            var r_success = double.TryParse(splitString[0], out double r);
+            var g_success = double.TryParse(splitString[1], out double g);
+            var b_success = double.TryParse(splitString[2], out double b);
+            var determination_success = int.TryParse(splitString[3], out int determination);
+            bool has_error = r_success || g_success || b_success || determination_success;
+
+            // pass the parsed values to whoever needs them.
+            return (r, g, b, determination, has_error);
+
+        }
+
+        private void BlueStatus_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private enum ColorDetermination
+        {
+            None = 0,
+            Red = 1,
+            Green = 2,
+            Blue = 3
+        }
+
+        public void Update_UI(double r, double g, double b, int determination)
+        {
+            BlueStatus.Text = "off";
+            RedStatus.Text = "off";
+            GreenStatus.Text = "off";
+
+            switch ((ColorDetermination)determination)
+            {
+                case ColorDetermination.None:
+                    break;
+                case ColorDetermination.Red:
+                    RedStatus.Text = "ON";
+                    break;
+                case ColorDetermination.Green:
+                    GreenStatus.Text = "ON";
+                    break;
+                case ColorDetermination.Blue:
+                    BlueStatus.Text = "ON";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void RedStatus_TextChanged(object sender, EventArgs e)
+        {
+
         }
     }
+
+
 }

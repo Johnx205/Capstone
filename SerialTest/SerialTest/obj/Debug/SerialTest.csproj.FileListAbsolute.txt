@@ -8,3 +8,13 @@ C:\Users\johnm\source\repos\SerialTest\SerialTest\obj\Debug\SerialTest.csproj.Ge
 C:\Users\johnm\source\repos\SerialTest\SerialTest\obj\Debug\SerialTest.csproj.CoreCompileInputs.cache
 C:\Users\johnm\source\repos\SerialTest\SerialTest\obj\Debug\SerialTest.exe
 C:\Users\johnm\source\repos\SerialTest\SerialTest\obj\Debug\SerialTest.pdb
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\bin\Debug\SerialTest.exe.config
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\bin\Debug\SerialTest.exe
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\bin\Debug\SerialTest.pdb
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.csproj.AssemblyReference.cache
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.Form1.resources
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.Properties.Resources.resources
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.csproj.GenerateResource.cache
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.csproj.CoreCompileInputs.cache
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.exe
+C:\Users\teebo\Source\Repos\Capstone_UI\SerialTest\SerialTest\obj\Debug\SerialTest.pdb

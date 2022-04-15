@@ -67,6 +67,12 @@ namespace SerialTest
             this.InputGroupBox.SuspendLayout();
             this.SuspendLayout();
             // 
+            // serialPort1
+            // 
+            this.serialPort1.DtrEnable = true;
+            this.serialPort1.RtsEnable = true;
+            this.serialPort1.DataReceived += new System.IO.Ports.SerialDataReceivedEventHandler(this.serialPort1_DataReceived);
+            // 
             // PortList
             // 
             this.PortList.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -157,6 +163,7 @@ namespace SerialTest
             this.InputData.Location = new System.Drawing.Point(21, 42);
             this.InputData.Multiline = true;
             this.InputData.Name = "InputData";
+            this.InputData.ReadOnly = true;
             this.InputData.Size = new System.Drawing.Size(245, 159);
             this.InputData.TabIndex = 0;
             // 
@@ -375,6 +382,7 @@ namespace SerialTest
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScroll = true;
             this.BackColor = System.Drawing.SystemColors.Control;
             this.ClientSize = new System.Drawing.Size(1284, 449);
             this.Controls.Add(this.CommandLabel);

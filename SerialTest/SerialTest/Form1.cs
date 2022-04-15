@@ -13,7 +13,8 @@ namespace SerialTest
 {
     public partial class Form1 : Form
     {
-      SerialPort serial_port = new SerialPort();
+        SerialPort serial_port = new SerialPort();
+        string DataIn;
         // static System.Windows.Forms.Timer myTimer = new System.Windows.Forms.Timer();
         //
         // Adds the event and the event handler for the method that will process the timer event to the timer.
@@ -56,11 +57,12 @@ namespace SerialTest
                     serial_port.PortName = PortList.Text;
                     serial_port.BaudRate = Convert.ToInt32(BaudBox.Text);
                     serial_port.Open();
-                    OpenPortButton.Enabled = false;     //Disable Open Port Button
                     ClosePortButton.Enabled = true;     //Enable Close Port Button
                     ReadButton.Enabled = true;          //Enable Read Button
                     StandbyButton.Enabled = true;      //Enable Standby Button
                     CalibrateButton.Enabled = true;    //Enable Calibrate Button
+                    OpenPortButton.Enabled = false;     //Disable Open Port Button
+                    serial_port.DataReceived += new SerialDataReceivedEventHandler(serialPort1_DataReceived);
                 }
             }
             catch (Exception ex)
@@ -68,8 +70,6 @@ namespace SerialTest
                 InputData.Text = "Invalid.";
             }
         }
-
-
 
         //ClosePortButton
         //Function: Closes serial communication, Disables all buttons except Open Port Button
@@ -95,6 +95,17 @@ namespace SerialTest
             {
                 InputData.Text = "Timeout Exception.";
             }
+        }
+
+        private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
+        {
+            DataIn = serial_port.ReadLine();
+            this.Invoke(new EventHandler(ShowData));
+        }
+
+        private void ShowData(object sender, EventArgs e)
+        {
+            InputData.Text = DataIn;
         }
     }
 }

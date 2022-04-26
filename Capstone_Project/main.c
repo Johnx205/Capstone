@@ -3,13 +3,10 @@
 #include <stddef.h>
 #include <stdbool.h>
 #include <string.h>
-
 #include "adc.h"
 #include "lcd.h"
 #include "timer_1ms.h"
-
 #include "rtcc.h"
-
 #include "p33CK256MP508.h"
 #define FCY 8000000UL
 #include <xc.h>
@@ -52,7 +49,6 @@ void IOPorts(){
     //TRISEbits.TRISE7 = 0; // Set RE7 pin as output, connected to BLUE multiplexer
 }
 
-
 int main ( void )
 {
     uint16_t RedADCResult, GreenADCResult, BlueADCResult;//,RedVolt;   //Variables for storing current ADC result
@@ -87,23 +83,17 @@ int main ( void )
     memset(&lastTime,0,sizeof(lastTime)); 
 
     ADC_SetConfiguration ( ADC_CONFIGURATION_DEFAULT );
-    //Ambient Calibration
-    // Tell User that current light will be considered " ambient"
-    // For example RedADC - Ambient_R, etc
-
     
    /*Select Channels to be analog*/ 
    ADC_ChannelEnable(RedADCInput);
    ADC_ChannelEnable(GreenADCInput);
    ADC_ChannelEnable(BlueADCInput);
     
-    /* Clear the screen */
-    //printf( "\f" );   
-    
     while ( 1 )
     {
         
-        //Sensor ADC Result
+        /*Sensor ADC Result*/
+        /*Take one ADC result*/
         //RedADCResult = ADC_Read12bit(RedADCInput);
         //GreenADCResult = ADC_Read12bit(GreenADCInput);
         //BlueADCResult = ADC_Read12bit(BlueADCInput);
@@ -119,29 +109,29 @@ int main ( void )
         GreenVolt = (GreenADCResult * 3.3) / 4096;
         BlueVolt = (BlueADCResult * 3.3) / 4096;
         
-        //Calculate RGB Average
-        RGBVolt = (RedVolt + GreenVolt + BlueVolt) / 3;
-            
-        if(RedVolt > RGBVolt && GreenVolt < RGBVolt && BlueVolt < RGBVolt && RedVolt > GreenVolt){
-            //Case 1:Red LED ON
-            LED_ON = 1;
-        }
-        else if(RedVolt < RGBVolt && GreenVolt > RGBVolt && BlueVolt < RGBVolt && BlueVolt < RedVolt/BlueVolt){
-            //Case 2:Green LED ON
-            LED_ON = 2;
-        }
-        else if(RedVolt < RGBVolt && GreenVolt > RGBVolt && BlueVolt < RGBVolt && BlueVolt > RedVolt/BlueVolt){
-            //Case 3: Blue LED ON
-            LED_ON = 3;
-        }
-        else{
+        //Default OFF threshold is 0.50V
+        if(RedVolt + GreenVolt + BlueVolt <0.50){
+            //No LED on (Dark)
             LED_ON = 0;
+        }
+        else{    
+            if(RedVolt > GreenVolt && GreenVolt > BlueVolt){ //RGB
+                //Case 1:Red LED ON
+                LED_ON = 1;
+            }
+            else if(GreenVolt > RedVolt && RedVolt > BlueVolt){
+                //Case 2:Green LED ON
+                LED_ON = 2;
+            }
+            else if(GreenVolt > BlueVolt && BlueVolt > RedVolt){
+             //Case 3: Blue LED ON
+                LED_ON = 3;
+            }
         }
     
      
         RTCC_TimeGet( &time );
         
-   
             if((RedADCResult != PrevRADCres) || (GreenADCResult != PrevGADCres) || (BlueADCResult != PrevBADCres) ||
                 (memcmp(&time, &lastTime, sizeof(time)) != MEMCMP_VALUES_IDENTICAL) )
             {                  

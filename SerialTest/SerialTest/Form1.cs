@@ -58,9 +58,9 @@ namespace SerialTest
                     serial_port.BaudRate = Convert.ToInt32(BaudBox.Text);
                     serial_port.Open();
                     ClosePortButton.Enabled = true;     //Enable Close Port Button
-                    ReadButton.Enabled = true;          //Enable Read Button
-                    StandbyButton.Enabled = true;      //Enable Standby Button
-                    CalibrateButton.Enabled = true;    //Enable Calibrate Button
+                    ReadButton.Enabled = false;          //Disable Read Button
+                    StandbyButton.Enabled = false;      //Enable Standby Button
+                    CalibrateButton.Enabled =false;    //Enable Calibrate Button
                     OpenPortButton.Enabled = false;     //Disable Open Port Button
                     serial_port.DataReceived += new SerialDataReceivedEventHandler(serialPort1_DataReceived);
                 }
@@ -84,17 +84,10 @@ namespace SerialTest
         }
 
         //ReadButton
-        //Function: Reads Data being transmitted over serial communication
+        //Not implemented
         private void ReadButton_Click(object sender, EventArgs e)
         {
-            try
-            {
-                InputData.Text = serial_port.ReadExisting();
-            }
-            catch (TimeoutException)
-            {
-                InputData.Text = "Timeout Exception.";
-            }
+       
         }
 
         private void serialPort1_DataReceived(object sender, SerialDataReceivedEventArgs e)
@@ -109,9 +102,16 @@ namespace SerialTest
             var parsedData = Parse_LED_Status(DataIn);
             if (true)
             {
-                Update_UI(parsedData.r, parsedData.g, parsedData.b, parsedData.d); 
+                Update_UI(parsedData.r, parsedData.g, parsedData.b, parsedData.d);
             }
+        }
 
+        private enum ColorDetermination
+        {
+            None = 0,
+            Red = 1,
+            Green = 2,
+            Blue = 3
         }
 
         private (double r, double g, double b, int d, bool has_error) Parse_LED_Status(string DataIn)
@@ -136,20 +136,6 @@ namespace SerialTest
 
             // pass the parsed values to whoever needs them.
             return (r, g, b, determination, has_error);
-
-        }
-
-        private void BlueStatus_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private enum ColorDetermination
-        {
-            None = 0,
-            Red = 1,
-            Green = 2,
-            Blue = 3
         }
 
         public void Update_UI(double r, double g, double b, int determination)
@@ -161,26 +147,25 @@ namespace SerialTest
             switch ((ColorDetermination)determination)
             {
                 case ColorDetermination.None:
+                    C1Box.BackColor = Color.White;
                     break;
                 case ColorDetermination.Red:
                     RedStatus.Text = "ON";
+                    C1Box.BackColor = Color.Red;
                     break;
                 case ColorDetermination.Green:
                     GreenStatus.Text = "ON";
+                    C1Box.BackColor = Color.Green;
                     break;
                 case ColorDetermination.Blue:
                     BlueStatus.Text = "ON";
+                    C1Box.BackColor = Color.Blue;
                     break;
                 default:
                     break;
             }
         }
 
-        private void RedStatus_TextChanged(object sender, EventArgs e)
-        {
 
-        }
     }
-
-
 }
